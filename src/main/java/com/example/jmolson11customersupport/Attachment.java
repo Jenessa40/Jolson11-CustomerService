@@ -4,6 +4,10 @@ public class Attachment {
     private String name;
     private byte[] contents;
 
+public Attachment(){
+    this.name = name;
+    this.contents = contents;
+}
     //getter, setter
     public String getName(){
         return name;
@@ -15,7 +19,7 @@ public class Attachment {
 
     //getter/setter
     public byte[] getContents() {
-        return contents;
+    return contents;
     }
 
     public void setContents(byte[] contents) {

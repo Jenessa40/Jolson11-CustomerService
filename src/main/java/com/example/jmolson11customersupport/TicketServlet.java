@@ -56,30 +56,15 @@ class TicketServlet<Attachments> extends HttpServlet {
 
 
     private void listTickets(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        PrintWriter out = resp.getWriter();
-
-        //create a ticket list
-        out.println("<html><body><h2>Tickets</h2>");
-        out.println("<a href=\"ticket?action=createTicket\">Create Ticket</a><br><br>");
-
-        // list tickets
-        if (ticketMap.size() == 0) {
-            out.println("There are no tickets yet...");
-        }
-        else {
-            for (int id : ticketMap.keySet()) {
-                Ticket ticket = ticketMap.get(id);
-                out.println("Ticket ID" + id);
-                out.println(": <a href=\"ticket?action=view&TicketId=" + id + "\">");
-                out.println(ticket.getTicket() + "</a><br>");
-            }
-        }
-        out.println("</body></html>");
-
+        req.setAttribute("ticketDatabase, ticketDB");
+        req.getRequestDispatcher("WEB-INF/jsp/view.listTickets.jsp").forward(req, resp);
     }
 
     private void viewTicket(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String idString = req.getParameter("ticket");
+       String idString = req.getParameter("ticketId");
+       req.getAttribute("Ticket,ticket");
+       req.getRequestDispatcher("WEB-INF/jsp/view/viewTicket.jsp");
+        /* String idString = req.getParameter("ticket");
 
         PrintWriter out = resp.getWriter();
         out.println("<html><body><h2>ticket</h2>");
@@ -93,7 +78,7 @@ class TicketServlet<Attachments> extends HttpServlet {
     }
 
     private Object ticketMap() {
-        return null;
+        return null;*/
     }
 
     private void createTicket(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -151,24 +136,7 @@ class TicketServlet<Attachments> extends HttpServlet {
         }
     }
 
-    private void showTicketForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        PrintWriter out = resp.getWriter();
-
-        out.println("<html><body><h2>Create Ticket</h2>");
-        out.println("<form method=\"Create\" action=\"ticket\" enctype=\"multipart/form-data\">");
-        out.println("<input type=\"hidden\" name=\"action\" value=\"create\">");
-        out.println("Customer Name:<br>");
-        out.println("<input type=\"text\" name=\"title\"><br><br>");
-        out.println("Body:<br>");
-        out.println("<textarea name=\"body\" rows=\"25\" cols=\"100\"></textarea><br><br>");
-        out.println("<b>Attachment</b><br>");
-        out.println("<input type=\"file\" name=\"file1\"><br><br>");
-        out.println("<input type=\"submit\" value=\"Submit\">");
-        out.println("</form></body></html>");
-
-    }
-
-    private Attachments processAttachment(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    private Attachment processAttachment(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         InputStream in = Ticket.getInputStream();
         ByteArrayOutputStream out = new ByteArrayOutputStream();
 
@@ -183,12 +151,28 @@ class TicketServlet<Attachments> extends HttpServlet {
         attachment.setName(Ticket.getSubmittedFileName());
         attachment.setContents(out.toByteArray());
 
-        Attachments attachments = new Attachments();
+        Attachment attachments = new Attachment();
         return attachments;
     }
 
     private Ticket getTicket(int ticketId) {
         return null;
+    }
+    private void showPostForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+        req.getRequestDispatcher("WEB-INF/jsp/view/ticketForm.jsp").forward(req, resp);
+        /*
+        out.println("<html><body><h2>Ticket</h2>");
+        out.println("<form method=\"Ticket\" action=\"blog\" enctype=\"multipart/form-data\">");
+        out.println("<input type=\"hidden\" name=\"action\" value=\"create\">");
+        out.println("Title:<br>");
+        out.println("<input type=\"text\" name=\"title\"><br><br>");
+        out.println("Body:<br>");
+        out.println("<textarea name=\"body\" rows=\"25\" cols=\"100\"></textarea><br><br>");
+        out.println("<b>Image</b><br>");
+        out.println("<input type=\"file\" name=\"file1\"><br><br>");
+        out.println("<input type=\"submit\" value=\"Submit\">");
+        out.println("</form></body></html>");*/
+
     }
 }
 

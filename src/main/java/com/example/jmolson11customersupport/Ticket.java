@@ -9,34 +9,7 @@ public class Ticket {
    private String customerName;
    private String subject;
    private String body;
-   private Map<String, String> attachments; //to store file paths
-
-    //constructor
-   public Ticket(String customerName, String subject, String body){
-       this.customerName = customerName;
-       this.subject = subject;
-       this.body = body;
-       this.attachments = new HashMap<>();
-    }
-    //Default constructor
-    public Ticket(){
-       this.customerName = "";
-       this.subject = "";
-       this.body = "";
-       this.attachments = new HashMap<>();
-    }
-
-    public static boolean getTicket() {
-       return false;
-    }
-
-    public static InputStream getInputStream() {
-       return null;
-    }
-
-    public static String getSubmittedFileName() {
-       return null;
-    }
+   private String attachment;
 
     //getter and setter methods
     public String getCustomerName(){
@@ -58,9 +31,13 @@ public class Ticket {
        this.body = body;
     }
     //Helper method
-    public void addAttachment(String attachmentName, String attachmentContent){
-       attachments.put(attachmentName, attachmentContent);
+    public void setAttachment(Attachment, attachment){
+        this.attachment = attachment;
     }
+    public void getAttachment(){
+        return attachment;
+    }
+
     public int getNumberOfAttachments(){
        return attachments.size();
     }

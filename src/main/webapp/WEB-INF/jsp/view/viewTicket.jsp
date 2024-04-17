@@ -1,7 +1,3 @@
-<%
-    String ticketId;
-    Ticket ticket = (Ticket)request.getAttribute("ticket");
-%>
 <html>
 <head>
     <title>Ticket #c:out value="${ticketId}"</title>

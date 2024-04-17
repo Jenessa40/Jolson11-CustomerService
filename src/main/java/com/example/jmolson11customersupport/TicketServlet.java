@@ -1,5 +1,5 @@
 package com.example.jmolson11customersupport;
-
+jakarta.servlet.http.Part;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,7 +13,7 @@ import jakarta.servlet.annotation.*;
 
 @WebServlet(name = "tickets", value="/tickets")
 @MultipartConfig(fileSizeThreshold = 5_242_880, maxFileSize = 20_971_520L, maxRequestSize = 41_943_040L)
-class TicketServlet<Attachments> extends HttpServlet {
+class TicketServlet extends HttpServlet {
     private Map<Integer, Ticket> ticketMap; // Store tickets
 
     @Override
@@ -31,7 +31,7 @@ class TicketServlet<Attachments> extends HttpServlet {
         }
         switch(action) {
             case "createTicket" -> createTicket(request, response);
-            case "viewTicker" -> viewTicket(request, response);
+            case "viewTicket" -> viewTicket(request, response);
             case "downloadAttachment" -> downloadAttachment(request, response);
             default -> listTickets(request, response);
         }
@@ -44,11 +44,8 @@ class TicketServlet<Attachments> extends HttpServlet {
                 case "createTicket":
                     createTicket(request, response);
                     break;
-                case "processAttachment":
-                    processAttachment(request, response);
-                    break;
                 default:
-                    response.getWriter().write("Invalid action");
+                    response.sendRedirect("tickets");
             }
 
         }
@@ -56,13 +53,13 @@ class TicketServlet<Attachments> extends HttpServlet {
 
 
     private void listTickets(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setAttribute("ticketDatabase, ticketDB");
-        req.getRequestDispatcher("WEB-INF/jsp/view.listTickets.jsp").forward(req, resp);
+        req.setAttribute("Ticket", ticketMap);
+        req.getRequestDispatcher("WEB-INF/jsp/view/listTickets.jsp").forward(req, resp);
     }
 
     private void viewTicket(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
        String idString = req.getParameter("ticketId");
-       req.getAttribute("Ticket,ticket");
+       req.setAttribute("Ticket", ticketMap.get(Integer.parseInt(idString)));
        req.getRequestDispatcher("WEB-INF/jsp/view/viewTicket.jsp");
         /* String idString = req.getParameter("ticket");
 
@@ -83,18 +80,26 @@ class TicketServlet<Attachments> extends HttpServlet {
 
     private void createTicket(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Ticket ticket = new Ticket();
+        ticket.setSubject(req.getParameter("Customer subject"));
         ticket.setCustomerName(req.getParameter("customer name"));
         ticket.setBody(req.getParameter("body"));
-
 
         int id;
         synchronized(this) {
             id = this.ticketMap.size();
             ticketMap.put(id, ticket);
         }
+        Part file + request.getPart("file1");
+        if(file != null){
+            Attachment attachment = processAttachment(file);
+            if (attachment != null) {
+                Ticket.setAttachment(ticket);
+            }
+            }
+        }
 
         //System.out.println(blog);  // see what is in the blog object
-        resp.sendRedirect("ticket?action=view&ticket=" + id);
+        resp.sendRedirect("tickets=view&ticketID=" + id);
     }
 
     private void downloadAttachment(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -104,12 +109,12 @@ class TicketServlet<Attachments> extends HttpServlet {
 
         String name = req.getParameter("image");
         if (name == null) {
-            resp.sendRedirect("ticket?action=view&ticketId=" + idString);
+            resp.sendRedirect("tickets=view&ticketId=" + idString);
         }
 
         Attachments attachments = (Attachments) ticket.getAllAttachements();
         if (attachments == null) {
-            resp.sendRedirect("ticket?action=view&ticketId=" + idString);
+            resp.sendRedirect("tickets=view&ticketId=" + idString);
             return;
         }
     }

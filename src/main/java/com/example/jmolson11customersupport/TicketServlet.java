@@ -1,5 +1,5 @@
 package com.example.jmolson11customersupport;
-jakarta.servlet.http.Part;
+import jakarta.servlet.http.Part;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,7 +13,7 @@ import jakarta.servlet.annotation.*;
 
 @WebServlet(name = "tickets", value="/tickets")
 @MultipartConfig(fileSizeThreshold = 5_242_880, maxFileSize = 20_971_520L, maxRequestSize = 41_943_040L)
-class TicketServlet extends HttpServlet {
+public class TicketServlet extends HttpServlet {
     private Map<Integer, Ticket> ticketMap; // Store tickets
 
     @Override
@@ -89,32 +89,31 @@ class TicketServlet extends HttpServlet {
             id = this.ticketMap.size();
             ticketMap.put(id, ticket);
         }
-        Part file + request.getPart("file1");
+        Part file = req.getPart("file1");
         if(file != null){
             Attachment attachment = processAttachment(file);
             if (attachment != null) {
-                Ticket.setAttachment(ticket);
-            }
+                ticket.setAttachment(attachment);
             }
         }
 
         //System.out.println(blog);  // see what is in the blog object
-        resp.sendRedirect("tickets=view&ticketID=" + id);
+        resp.sendRedirect("tickets?action=view&ticketID=" + id);
     }
 
     private void downloadAttachment(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String idString = req.getParameter("ticket");
+        String idString = req.getParameter("ticketId");
 
         Ticket ticket = getTicket(idString, resp);
 
-        String name = req.getParameter("image");
+        String name = req.getParameter("attachment");
         if (name == null) {
-            resp.sendRedirect("tickets=view&ticketId=" + idString);
+            resp.sendRedirect("tickets?action=view&ticketId=" + idString);
         }
 
-        Attachments attachments = (Attachments) ticket.getAllAttachements();
-        if (attachments == null) {
-            resp.sendRedirect("tickets=view&ticketId=" + idString);
+        Attachment attachment = ticket.getAttachment();
+        if (attachment == null) {
+            resp.sendRedirect("tickets?action=view&ticketId=" + idString);
             return;
         }
     }
@@ -141,8 +140,8 @@ class TicketServlet extends HttpServlet {
         }
     }
 
-    private Attachment processAttachment(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        InputStream in = Ticket.getInputStream();
+    private Attachment processAttachment(Part file) throws ServletException, IOException {
+        InputStream in = file.getInputStream();
         ByteArrayOutputStream out = new ByteArrayOutputStream();
 
         // processing the binary data to bytes
@@ -153,7 +152,7 @@ class TicketServlet extends HttpServlet {
         }
 
         Attachment attachment = new Attachment();
-        attachment.setName(Ticket.getSubmittedFileName());
+        attachment.setName(file.getSubmittedFileName());
         attachment.setContents(out.toByteArray());
 
         Attachment attachments = new Attachment();

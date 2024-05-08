@@ -6,7 +6,7 @@ import jakarta.servlet.http.HttpSessionIdListener;
 import jakarta.servlet.http.HttpSessionListener;
 
 @WebListener
-public class Sessionlistener implements HttpSessionListener, HttpSessionIdListener {
+public class SessionListener implements HttpSessionListener, HttpSessionIdListener {
     @Override
     public void sessionIdChanged(HttpSessionEvent se, String oldId) {
         System.out.println(oldId + " changed to " + se.getSession().getId());

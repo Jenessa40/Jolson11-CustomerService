@@ -9,6 +9,6 @@ import org.springframework.web.servlet.view.RedirectView;
 public class IndexController {
     @RequestMapping("/")
     public View index() {
-        return new RedirectView("/ticket/list", true, false);
+        return new RedirectView("/blog/list", true, false);
     }
 }

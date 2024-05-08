@@ -1,6 +1,6 @@
 package com.example.jmolson11customersupport.site;
 
-import com.example.jmolson11customersupport.Attachment;
+import com.example.jmolson11customersupport.entities.Attachment;
 import com.example.jmolson11customersupport.Ticket;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

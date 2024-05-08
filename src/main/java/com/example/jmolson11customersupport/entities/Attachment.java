@@ -1,4 +1,4 @@
-package com.example.jmolson11customersupport;
+package com.example.jmolson11customersupport.entities;
 
 public class Attachment {
     private String name;

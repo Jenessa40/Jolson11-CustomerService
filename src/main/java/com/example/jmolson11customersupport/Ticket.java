@@ -1,15 +1,14 @@
 package com.example.jmolson11customersupport;
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import com.example.jmolson11customersupport.entities.Attachment;
+
+import java.time.LocalDate;
 
 public class Ticket {
     private String customerName;
     private String subject;
     private String body;
     private Attachment attachment;
+    private long id;
 
     //getter and setter methods
     public String getCustomerName() {
@@ -47,6 +46,25 @@ public class Ticket {
 
     public Attachment getAttachment() {
         return attachment;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return null;
+    }
+
+    public void setTitle(String title) {
+    }
+
+    public Object setDate(LocalDate localDate) {
+        return null;
     }
 }
 

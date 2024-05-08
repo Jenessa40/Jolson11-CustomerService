@@ -33,8 +33,4 @@ public class SessionListUtil {
     public static int getNumberOfSessions() {
         return SESSIONS.size();
     }
-
-
-
-
 }
